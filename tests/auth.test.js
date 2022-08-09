@@ -32,4 +32,14 @@ describe('/api/v1/auth', () => {
     expect(statusCode).toBe(200);
   });
 
+  it('/signout should remove a user session', async () => {
+    const { agent } = await signUpUser();
+
+    const { body } = await agent.delete('/api/v1/users/signout');
+    expect(body).toEqual(null);
+
+    const { statusCode } = await agent.get('/api/v1/users/verify');
+    expect(statusCode).toBe(401);
+  });
+
 });
