@@ -17,6 +17,16 @@ describe('/api/v1/auth', () => {
     expect(statusCode).toBe(200);
   });
 
+  it('/signup should prevent exact same emails from being used', async () => {
+    await signUpUser();
+    const { res } = await signUpUser();
+    expect(res.statusCode).toBe(400);
+    expect(res.body).toEqual({
+      status: 400,
+      message: 'Please be more creative this email already exists'
+    }); 
+  });
+
   it('/signin should login a already created user and give them a cookie', async () => {
     const { credentials } = await signUpUser();
 
