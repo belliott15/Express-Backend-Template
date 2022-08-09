@@ -29,7 +29,7 @@ CREATE TABLE users (
 
 CREATE TABLE monsters (
     id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    user_id BIGINT NOT NULL, 
+    user_id BIGINT, 
     name VARCHAR NOT NULL,
     species VARCHAR NOT NULL,
     power_level INT NOT NULL DEFAULT(10),
