@@ -4,16 +4,14 @@
   "description": "express-backend-template",
   "main": "index.js",
   "scripts": {
-    "lint": "eslint --ext js --ext lib",
-    "test": "cross-env DOTENV_CONFIG_PATH=./tests/.env jest --verbose --runInBand --testLocationInResults --setupFiles dotenv/config --passWithNoTests",
+    "lint": "eslint .",
+    "test": "env-cmd -f ./tests/.env jest --verbose --runInBand --testLocationInResults --passWithNoTests",
     "test:watch": "npm run test -- --watch",
-    "start": "node -r dotenv/config index.js",
-    "start:watch": "nodemon -i ./tests -r dotenv/config index.js",
-    "create-db": "createdb -U postgres shopping",
-    "create-db:test": "createdb -U postgres shopping-test",
-    "setup-db": "psql -f ./sql/setup.sql",
-    "setup-db:local": "psql -d shopping -f ./sql/setup.sql",
-    "setup-heroku": "heroku run npm run setup-db"
+    "start": "env-cmd node server.js",
+    "start:watch": "env-cmd nodemon -i ./tests server.js",
+    "create-dbs": "env-cmd createdb && env-cmd -f ./tests/.env createdb",
+    "setup-db:dev": "env-cmd psql -f ./sql/setup.sql",
+    "setup-db:heroku": "heroku pg:psql -f ./sql/setup.sql"
   },
   "jest": {
     "testEnvironment": "node"
@@ -43,9 +41,8 @@
     "bcrypt": "^5.0.1",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
-    "dotenv": "^16.0.1",
+    "env-cmd": "^10.1.0",
     "express": "^4.18.1",
-    "jest": "^28.1.3",
     "jsonwebtoken": "^8.5.1",
     "morgan": "^1.10.0",
     "pg": "^8.7.3"
