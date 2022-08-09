@@ -42,6 +42,30 @@ describe('/api/v1/auth', () => {
     expect(statusCode).toBe(200);
   });
 
+  it('/signin wrong email or password', async () => {
+    const { credentials } = await signUpUser();
+    
+    const res = await request(app)
+      .post('/api/v1/users/signin')
+      .send({ ...credentials, email: 'Winifred@hocuspocus.com' });
+
+    expect(res.statusCode).toBe(400);
+    expect(res.body).toEqual({
+      status: 400,
+      message: 'Invalid Input'
+    });
+
+    const res1 = await request(app)
+      .post('/api/v1/users/signin')
+      .send({ ...credentials, password: 'witchesbroom' });
+
+    expect(res1.statusCode).toBe(400);
+    expect(res1.body).toEqual({
+      status: 400,
+      message: 'Invalid Input'
+    });
+  });
+
   it('/signout should remove a user session', async () => {
     const { agent } = await signUpUser();
 
