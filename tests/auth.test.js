@@ -1,5 +1,5 @@
-// const request = require('supertest');
-// const app = require('../lib/app');
+const request = require('supertest');
+const app = require('../lib/app');
 const { setupDb, signUpUser } = require('./test-utils');
 
 describe('/api/v1/auth', () => {
@@ -17,5 +17,19 @@ describe('/api/v1/auth', () => {
     expect(statusCode).toBe(200);
   });
 
-    
+  it('/signin should login a already created user and give them a cookie', async () => {
+    const { credentials } = await signUpUser();
+
+    const agent = request.agent(app);
+    const res = await agent.post('/api/v1/users/signin').send(credentials);
+
+    expect(res.body).toEqual({
+      id: expect.any(String),
+      email: credentials.email,
+    });
+
+    const { statusCode } = await agent.get('/api/v1/users/verify');
+    expect(statusCode).toBe(200);
+  });
+
 });
