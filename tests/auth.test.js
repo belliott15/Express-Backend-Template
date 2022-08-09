@@ -1,5 +1,6 @@
-const request = require('supertest');
-const app = require('../lib/app');
+// const request = require('supertest');
+// const app = require('../lib/app');
+const { setupDb, signUpUser } = require('./test-utils');
 
 describe('/api/v1/auth', () => {
   beforeEach(setupDb);

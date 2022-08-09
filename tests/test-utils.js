@@ -1,8 +1,8 @@
-const pool = require('../utils/pool');
+const pool = require('../lib/utils/pool');
 const { readFileSync } = require('node:fs');
 const sql = readFileSync('../../sql/setup.sql', 'utf-8');
 const request = require('supertest');
-const app = require('../app');
+const app = require('../lib/app');
 
 function setupDb(){
   return pool.query(sql);
