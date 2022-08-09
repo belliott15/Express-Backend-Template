@@ -13,7 +13,7 @@ describe('/api/v1/auth', () => {
       email: credentials.email,
     });
 
-    const { statusCode } = await agent.get('/api/v1/auth/verify');
+    const { statusCode } = await agent.get('/api/v1/users/verify');
     expect(statusCode).toBe(200);
   });
 
