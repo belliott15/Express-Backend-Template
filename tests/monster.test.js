@@ -43,21 +43,23 @@ describe('/api/v1/auth', () => {
       password: 'password',
     });
 
-    const { body: user2Monster } = await agent2.post('/api/monsters').send({
+    const { body: user2Monster } = await agent2.post('/api/v1/monsters').send({
       name: 'Ariel', 
       species: 'Siren', 
       type: 'Psychic', 
       sub_type: 'water' 
     });
 
-    const res1 = await agent.get('api/v1/monsters');
+    const res1 = await agent.get('/api/v1/monsters');
     expect(res1.status).toEqual(200);
     expect(res1.body).toEqual([user1Monster]);
 
-    const res2 = await agent.get('api/v1/monsters');
+    const res2 = await agent2.get('/api/v1/monsters');
     expect(res2.status).toEqual(200);
     expect(res2.body).toEqual([user2Monster]);
 
   });
+
+  
 
 });
