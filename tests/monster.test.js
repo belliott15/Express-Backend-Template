@@ -28,21 +28,36 @@ describe('/api/v1/auth', () => {
     });
   });
 
-  it('GET /:id should get a specific monster by id', async () => {
+  it('GET / should get all user monsters', async () => {
     const { agent } = await signUpUser();
 
-    const { body: monster } = await agent.post('/api/v1/monsters')
-      .send({
-        name: 'Medusa', 
-        species: 'Gorgon', 
-        type: 'cursed', 
-        sub_type: 'stone'
-      });
+    const { body: user1Monster } = await agent.post('/api/v1/monsters').send({ 
+      name: 'Medusa', 
+      species: 'Gorgon', 
+      type: 'cursed', 
+      sub_type: 'stone' 
+    });
 
-    const { status, body: got } = await agent.get(`/api/v1/monsters/${monster.id}`);
+    const { agent: agent2 } = await signUpUser({
+      email: 'secondUser@email.com', 
+      password: 'password',
+    });
 
-    expect(status).toBe(200);
-    expect(got).toEqual(monster);
+    const { body: user2Monster } = await agent2.post('/api/monsters').send({
+      name: 'Ariel', 
+      species: 'Siren', 
+      type: 'Psychic', 
+      sub_type: 'water' 
+    });
+
+    const res1 = await agent.get('api/v1/monsters');
+    expect(res1.status).toEqual(200);
+    expect(res1.body).toEqual([user1Monster]);
+
+    const res2 = await agent.get('api/v1/monsters');
+    expect(res2.status).toEqual(200);
+    expect(res2.body).toEqual([user2Monster]);
+
   });
 
 });
