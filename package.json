@@ -7,8 +7,8 @@
     "lint": "eslint .",
     "test": "env-cmd -f ./tests/.env jest --verbose --runInBand --testLocationInResults --passWithNoTests",
     "test:watch": "npm run test -- --watch",
-    "start": "env-cmd node server.js",
-    "start:watch": "env-cmd nodemon -i ./tests server.js",
+    "start": "env-cmd node index.js",
+    "start:watch": "env-cmd nodemon -i ./tests index.js",
     "create-dbs": "env-cmd createdb && env-cmd -f ./tests/.env createdb",
     "setup-db:dev": "env-cmd psql -f ./sql/setup.sql",
     "setup-db:heroku": "heroku pg:psql -f ./sql/setup.sql"

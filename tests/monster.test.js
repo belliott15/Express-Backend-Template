@@ -6,7 +6,7 @@ describe('/api/v1/auth', () => {
   beforeEach(setupDb);
 
   it('POST /monsters should add a new monster', async () => {
-    const { agent } = await signUpUser();
+    const { agent, user } = await signUpUser();
     const newMonster = { 
       name: 'Medusa', 
       species: 'Gorgon', 
@@ -24,7 +24,7 @@ describe('/api/v1/auth', () => {
       power_level: 10,
       created_at: expect.any(String),
       //need to figure out why its not grabbing user.id
-      user_id: null
+      user_id: user.id
     });
   });
 
