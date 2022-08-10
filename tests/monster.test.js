@@ -100,4 +100,23 @@ describe('/api/v1/auth', () => {
     expect(updated).toEqual({ ...monster, power_level: 20 });
   });
 
+  it('DELETE /:id should delete items for authorized user', async () => {
+    const { agent } = await signUpUser();
+
+    const { body: monster } = await agent.post('/api/v1/monsters').send({ 
+      name: 'Medusa', 
+      species: 'Gorgon', 
+      type: 'cursed', 
+      sub_type: 'stone' 
+    });
+
+    const { status, body } = await agent.delete(`/api/v1/monsters/${monster.id}`);
+    expect(status).toBe(200);
+    expect(body).toEqual(monster);
+
+    const { body: monster1 } = await agent.get('/api/v1/monsters');
+
+    expect(monster1.length).toBe(0);
+  });
+
 });
