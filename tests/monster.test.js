@@ -28,5 +28,21 @@ describe('/api/v1/auth', () => {
     });
   });
 
+  it('GET /:id should get a specific monster by id', async () => {
+    const { agent } = await signUpUser();
+
+    const { body: monster } = await agent.post('/api/v1/monsters')
+      .send({
+        name: 'Medusa', 
+        species: 'Gorgon', 
+        type: 'cursed', 
+        sub_type: 'stone'
+      });
+
+    const { status, body: got } = await agent.get(`/api/v1/monsters/${monster.id}`);
+
+    expect(status).toBe(200);
+    expect(got).toEqual(monster);
+  });
 
 });
