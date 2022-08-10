@@ -1,5 +1,5 @@
-// const request = require('supertest');
-// const app = require('../lib/app');
+const request = require('supertest');
+const app = require('../lib/app');
 const { setupDb, signUpUser } = require('./test-utils');
 
 describe('/api/v1/auth', () => {
@@ -60,6 +60,44 @@ describe('/api/v1/auth', () => {
 
   });
 
-  
+  it('GET /:id should return a specific monster', async () => {
+    const { agent } = await signUpUser();
+
+    const { body: monster } = await agent.post('/api/v1/monsters').send({
+      name: 'Medusa', 
+      species: 'Gorgon', 
+      type: 'cursed', 
+      sub_type: 'stone'
+    });
+
+    
+    const { status, body: got } = await agent.get(`/api/v1/monsters/${monster.id}`);
+    
+
+    expect(status).toBe(200);
+    expect(got).toEqual(monster);
+  });
+
+  it('GET / should prevent unauthenticated user from accessing monsters', async () => {
+    const { status } = await request(app).get('/api/v1/monsters');
+    expect(status).toEqual(401);
+  });
+
+  it('UPDATE /:id should update a monster', async () => {
+    const { agent } = await signUpUser();
+
+    const { body: monster } = await agent.post('/api/v1/monsters').send({ 
+      name: 'Medusa', 
+      species: 'Gorgon', 
+      type: 'cursed', 
+      sub_type: 'stone' 
+    });
+
+    const { status, body: updated } = await agent.put(`/api/v1/monsters/${monster.id}`)
+      .send({ power_level: 20 });
+
+    expect(status).toBe(200);
+    expect(updated).toEqual({ ...monster, power_level: 20 });
+  });
 
 });
