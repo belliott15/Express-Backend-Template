@@ -14,8 +14,8 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - run: npm ci
-      - run: npm lint
-      - run: npm test
+      - run: npm run lint
+      - run: npm run test
         env:
           CI: true
           DATABASE_URL: postgres://alchemy:alchemy@postgres:5432/alchemy
